@@ -76,7 +76,7 @@ const AllFields: CollectionConfig = {
       type: 'select',
       options: [{
         value: 'option-1',
-        label: 'Option 1 Label',
+        label: 'Options 1 Label',
       }, {
         value: 'option-2',
         label: 'Option 2 Label',
@@ -84,8 +84,11 @@ const AllFields: CollectionConfig = {
         value: 'option-3',
         label: 'Option 3 Label',
       }, {
-        value: 'option-4',
-        label: 'Option 4 Label',
+        value: false,
+        label: 'False',
+      }, {
+        value: true,
+        label: 'True',
       }],
       defaultValue: 'option-1',
       required: true,
@@ -145,6 +148,12 @@ const AllFields: CollectionConfig = {
       }, {
         value: 'option-3',
         label: 'Option 3 Label',
+      }, {
+        value: false,
+        label: 'False',
+      }, {
+        value: true,
+        label: 'True',
       }],
       defaultValue: 'option-2',
       required: true,

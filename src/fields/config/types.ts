@@ -51,7 +51,7 @@ export type Validate = (value: unknown, options?: any) => string | true | Promis
 
 export type OptionObject = {
   label: string
-  value: string
+  value: string | boolean
 }
 
 export type Option = OptionObject | string
