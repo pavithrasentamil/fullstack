@@ -75,6 +75,42 @@ const Geolocation: CollectionConfig = {
         afterRead: [({ value }) => validateFieldTransformAction('afterRead', value)],
       },
     },
+    {
+      name: 'points',
+      type: 'array',
+      hooks: {
+        beforeChange: [
+          ({ value }) => (value ? (value as {location: number[]}[]).map((point) => (
+            // TODO: this should work
+            { location: [point[0] + 1, point[1] + 1] }
+            // instead of the above, the transformActions from a parent level hook does not work as expected
+            // the below is necessary to set point data because child point data isn't being transformed correctly:
+            // {
+            //   location: {
+            //     type: 'Point',
+            //     coordinates: [
+            //       point.location[0] + 1,
+            //       point.location[1] + 1,
+            //     ],
+            //   },
+            // }
+          )) : null),
+        ],
+      },
+      fields: [
+        {
+          name: 'location',
+          type: 'point',
+          label: 'Location',
+          hooks: {
+            beforeValidate: [({ value }) => validateFieldTransformAction('beforeValidate', value)],
+            beforeChange: [({ value }) => validateFieldTransformAction('beforeChange', value)],
+            afterChange: [({ value }) => validateFieldTransformAction('afterChange', value)],
+            afterRead: [({ value }) => validateFieldTransformAction('afterRead', value)],
+          },
+        },
+      ],
+    },
   ],
 };
 

@@ -36,11 +36,12 @@ describe('GeoJSON', () => {
   describe('Point Field - REST', () => {
     const location = [10, 20];
     const localizedPoint = [30, 40];
+    const points = [{ location: [0, 0] }];
     let doc;
 
     beforeAll(async (done) => {
       const create = await fetch(`${serverURL}/api/geolocation`, {
-        body: JSON.stringify({ location, localizedPoint }),
+        body: JSON.stringify({ location, localizedPoint, points }),
         headers,
         method: 'post',
       });
@@ -53,6 +54,11 @@ describe('GeoJSON', () => {
       expect(doc.id).not.toBeNull();
       expect(doc.location).toStrictEqual(location);
       expect(doc.localizedPoint).toStrictEqual(localizedPoint);
+    });
+
+    it('should allow an array hook to transform nested point data', async () => {
+      expect(doc.points[0].location[0]).toStrictEqual(points[0].location[0] + 1);
+      expect(doc.points[0].location[1]).toStrictEqual(points[0].location[1] + 1);
     });
 
     it('should query where near point', async () => {
