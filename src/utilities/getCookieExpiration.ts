@@ -1,7 +1,8 @@
 const getCookieExpiration = (seconds = 7200) => {
-  const currentTime = new Date();
-  currentTime.setSeconds(currentTime.getSeconds() + seconds);
-  return currentTime;
+  const cookieExpiration = new Date();
+  const days = seconds / (60 * 60 * 24);
+  cookieExpiration.setDate(cookieExpiration.getDate() + days);
+  return cookieExpiration;
 };
 
 export default getCookieExpiration;

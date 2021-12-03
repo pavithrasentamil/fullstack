@@ -21,7 +21,7 @@ const Admin: CollectionConfig = {
     admin: () => true,
   },
   auth: {
-    tokenExpiration: 7200, // 2 hours
+    tokenExpiration: 28800000,
     verify: false,
     maxLoginAttempts: 5,
     lockTime: 600 * 1000, // lock time in ms
