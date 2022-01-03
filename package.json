@@ -40,7 +40,7 @@
     "test": "yarn test:int && yarn test:client",
     "pretest": "yarn build",
     "test:woop": "MONGO_URL=mongodb://localhost/payload-integration start-server-and-test dev http-get://localhost:3000/admin test:int",
-    "test:int": "MONGO_URL=mongodb://localhost/payload-integration cross-env PAYLOAD_CONFIG_PATH=demo/payload.config.ts DISABLE_LOGGING=true jest --config=jest.config.js --forceExit --runInBand",
+    "test:int": "MONGO_URL=mongodb://localhost/payload-integration cross-env PAYLOAD_CONFIG_PATH=demo/payload.config.ts DISABLE_LOGGING=true jest --config=jest.config.js --runInBand",
     "test:client": "cross-env PAYLOAD_CONFIG_PATH=demo/payload.config.ts jest --config=jest.react.config.js",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",

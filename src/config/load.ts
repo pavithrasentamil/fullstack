@@ -1,6 +1,7 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 import path from 'path';
+import fs from 'fs';
 import { SanitizedConfig } from './types';
 import findConfig from './find';
 import validate from './validate';

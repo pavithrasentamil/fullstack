@@ -14,10 +14,3 @@ export async function setupDb(): Promise<void> {
   const db = client.db(databaseName);
   db.dropDatabase();
 }
-
-export async function teardownDb(): Promise<void> {
-  const client = await connect();
-  const db = client.db(databaseName);
-  await db.dropDatabase();
-  await client.close();
-}
