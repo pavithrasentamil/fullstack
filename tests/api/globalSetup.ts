@@ -5,12 +5,16 @@ require('isomorphic-fetch');
 import loadConfig from '../../src/config/load';
 import { email, password } from '../../src/mongoose/testCredentials';
 import fileExists from './utils/fileExists';
+import { setupDb } from './mongoSetup';
 
 const { serverURL } = loadConfig();
 
 const mediaDir = path.join(__dirname, '../../demo', 'media');
 
 export default async () => {
+
+  await setupDb();
+
   const mediaDirExists = await fileExists(mediaDir);
   if (mediaDirExists) {
     fs.rmdirSync(mediaDir, { recursive: true });

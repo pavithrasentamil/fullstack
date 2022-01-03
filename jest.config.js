@@ -3,6 +3,7 @@ module.exports = {
   verbose: true,
   testEnvironment: 'node',
   globalSetup: '<rootDir>/tests/api/globalSetup.ts',
+  globalTeardown: '<rootDir>/tests/api/globalTeardown.ts',
   testMatch: [
     '**/?(*.)+(spec|test).ts'
   ],
