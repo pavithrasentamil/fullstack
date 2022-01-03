@@ -1,17 +1,16 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
 require('isomorphic-fetch');
-require('../../demo/server');
 
-const loadConfig = require('../../src/config/load').default;
-const { email, password } = require('../../src/mongoose/testCredentials');
-const fileExists = require('./utils/fileExists');
+import loadConfig from '../../src/config/load';
+import { email, password } from '../../src/mongoose/testCredentials';
+import fileExists from './utils/fileExists';
 
 const { serverURL } = loadConfig();
 
 const mediaDir = path.join(__dirname, '../../demo', 'media');
 
-const globalSetup = async () => {
+export default async () => {
   const mediaDirExists = await fileExists(mediaDir);
   if (mediaDirExists) {
     fs.rmdirSync(mediaDir, { recursive: true });
@@ -34,5 +33,3 @@ const globalSetup = async () => {
     throw new Error('Failed to register first user');
   }
 };
-
-module.exports = globalSetup;

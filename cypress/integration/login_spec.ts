@@ -5,8 +5,10 @@ const viewportSizes: Cypress.ViewportPreset[] = ['macbook-15', 'iphone-x', 'ipad
 
 describe('Payload Login', () => {
 
-  before('first login', () => {
+  before('Create User', () => {
     cy.visit(adminURL)
+    cy.viewport('macbook-15');
+
 
     cy.get('#email').type(credentials.email);
     cy.get('#password').type(credentials.password);
