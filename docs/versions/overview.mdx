@@ -8,7 +8,10 @@ keywords: version history, revisions, audit log, draft, publish, autosave, Conte
 
 Payload's powerful Versions functionality allows you to keep a running history of changes over time.
 
-When enabled, Payload will automatically scaffold a new Collection in your database to store versions of your document(s) over time, and the Admin UI will be extended with additional views that allow you to browse document versions, view diffs in order to see exactly what has changed in your documents (and when), and restore documents back to prior versions easily.
+When enabled, Payload will automatically scaffold a new Collection in your database to store versions of your document(s) over time, and the Admin UI will be extended with additional views that allow you to browse document versions, view diffs in order to see exactly what has changed in your documents (and when they changed), and restore documents back to prior versions easily.
+
+![Versions](https://payloadcms.com/images/versions.jpg)
+*Comparing an old version to a newer version of a document*
 
 **With Versions, you can:**
 
@@ -23,7 +26,26 @@ When enabled, Payload will automatically scaffold a new Collection in your datab
 	Versions are extremely performant and totally opt-in. They don't change the shape of your data at all. All versions are stored in a separate Collection and can be turned on and off easily at your discretion.
 </Banner>
 
-### Collections
+### Options
+
+Versions support a few different levels of functionality that each come with their own impacts to document workflow.
+
+##### Versions enabled, drafts disabled
+
+If you enable versions but keep draft mode disabled, Payload will simply create a new version of a document each time you update a document. This is great for use cases where you need to retain a history of all document updates over time, but always want to treat the newest document version as the version that is "published".
+
+For example, a use case for "versions enabled, drafts disabled" could be on a collection of users, where you might want to keep a version history of all changes ever made to users - but any changes to users should _always_ be treated as "published" and you have no need to maintain a "draft" version of a user.
+
+##### Versions and drafts enabled
+
+The largest changes that introduce themselves between having drafts enabled and disabled happen within the Payload admin panel. When you enable versions _and_ drafts, the Admin UI will update itself to include both "Save Draft" and "Publish Changes" buttons instead of a single "Save" button. All Payload APIs will also expose [a new argument](/docs/overview/versions/drafts#api) called `draft` which allows you to control if your document update(s) should be considered as draft or written straight to the published document. Read more about Drafts [here](/docs/versions/drafts).
+
+![Drafts Enabled](https://payloadcms.com/images/drafts-enabled.jpg)
+*Editing a document with Versions and Drafts enabled*
+
+##### Versions, drafts, and autosave enabled
+
+#### Collection Config
 
 Configuring Versions is done by adding the `versions` key to your Collection configs. Set it to `true` to enable default Versions settings, or customize versions options by setting the property equal to an object containing the following available options:
 
@@ -34,8 +56,12 @@ Configuring Versions is done by adding the `versions` key to your Collection con
 | `drafts `                    | Enable [Drafts](/docs/versions/drafts) mode for this collection. |
 
 
-### Globals
+#### Global Config
+
+Global versions work similarly to Collection versions but have a slightly different set of config properties supported.
 
 ### TODO:
 
-Screenshots, global docs, links to Drafts & Autosave
+- Screenshots
+- global docs
+- links to Drafts & Autosave
