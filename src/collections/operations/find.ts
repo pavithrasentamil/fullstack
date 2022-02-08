@@ -97,28 +97,12 @@ async function find<T extends TypeWithID = any>(incomingArgs: Arguments): Promis
     }
   }
 
-  if (collectionConfig.versions?.drafts && !draftsEnabled) {
-    queryToBuild.where.and.push({
-      or: [
-        {
-          _status: {
-            equals: 'published',
-          },
-        },
-        {
-          _status: {
-            exists: false,
-          },
-        },
-      ],
-    });
-  }
-
   const query = await Model.buildQuery(queryToBuild, locale);
 
   // /////////////////////////////////////
   // Find
   // /////////////////////////////////////
+
   const [sortProperty, sortOrder] = buildSortParam(args.sort, collectionConfig.timestamps);
 
   const optionsToExecute = {
