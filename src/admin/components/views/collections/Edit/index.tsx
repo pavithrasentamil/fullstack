@@ -50,16 +50,10 @@ const EditView: React.FC<IndexProps> = (props) => {
     if (!isEditing) {
       history.push(`${admin}/collections/${collection.slug}/${json?.doc?.id}`);
     } else {
-      const state = await buildStateFromSchema(fields, json.doc);
+      const state = await buildStateFromSchema(collection.fields, json.doc);
       setInitialState(state);
-
-      history.push({
-        state: {
-          data: json.doc,
-        },
-      });
     }
-  }, [admin, collection, fields, history, isEditing, getVersions]);
+  }, [admin, collection, history, isEditing, getVersions]);
 
   const [{ data, isLoading, isError }] = usePayloadAPI(
     (isEditing ? `${serverURL}${api}/${slug}/${id}` : null),
@@ -120,7 +114,6 @@ const EditView: React.FC<IndexProps> = (props) => {
   const apiURL = `${serverURL}${api}/${slug}/${id}${collection.versions.drafts ? '?draft=true' : ''}`;
   const action = `${serverURL}${api}/${slug}${isEditing ? `/${id}` : ''}?locale=${locale}&depth=0&fallback-locale=null`;
   const hasSavePermission = (isEditing && collectionPermissions?.update?.permission) || (!isEditing && collectionPermissions?.create?.permission);
-  const autosaveEnabled = collection.versions?.drafts && collection.versions.drafts.autosave;
 
   return (
     <NegativeFieldGutterProvider allow>
@@ -138,7 +131,6 @@ const EditView: React.FC<IndexProps> = (props) => {
           hasSavePermission,
           apiURL,
           action,
-          autosaveEnabled,
         }}
       />
     </NegativeFieldGutterProvider>

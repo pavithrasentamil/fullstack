@@ -1,4 +1,4 @@
-import { Condition } from '../../../../fields/config/types';
+import { Field as FieldConfig, Condition } from '../../../../fields/config/types';
 
 export type Field = {
   value: unknown
@@ -44,6 +44,7 @@ export type SubmitOptions = {
   action?: string
   method?: string
   overrides?: Record<string, unknown>
+  skipValidation?: boolean
 }
 
 export type DispatchFields = React.Dispatch<any>
@@ -59,6 +60,8 @@ export type GetDataByPath = <T = unknown>(path: string) => T;
 export type SetModified = (modified: boolean) => void;
 export type SetSubmitted = (submitted: boolean) => void;
 export type SetProcessing = (processing: boolean) => void;
+
+export type Reset = (fieldSchema: FieldConfig[], data: unknown) => Promise<void>
 
 export type Context = {
   dispatchFields: DispatchFields
@@ -78,4 +81,5 @@ export type Context = {
   setProcessing: SetProcessing
   setSubmitted: SetSubmitted
   formRef: React.MutableRefObject<HTMLFormElement>
+  reset: Reset
 }

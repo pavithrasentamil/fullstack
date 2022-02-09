@@ -46,7 +46,6 @@ const DefaultEditView: React.FC<Props> = (props) => {
     apiURL,
     action,
     hasSavePermission,
-    autosaveEnabled,
   } = props;
 
   const {
@@ -148,8 +147,8 @@ const DefaultEditView: React.FC<Props> = (props) => {
                     </li>
                   )}
                 </ul>
-                <div className={`${baseClass}__document-actions${(!autosaveEnabled || (isEditing && preview)) ? ` ${baseClass}__document-actions--has-2` : ''}`}>
-                  {(preview && autosaveEnabled) && (
+                <div className={`${baseClass}__document-actions${((collection.versions?.drafts && !collection.versions?.drafts?.autosave) || (isEditing && preview)) ? ` ${baseClass}__document-actions--has-2` : ''}`}>
+                  {(preview && (!collection.versions?.drafts || collection.versions?.drafts?.autosave)) && (
                     <PreviewButton
                       generatePreviewURL={preview}
                       data={data}
@@ -172,7 +171,7 @@ const DefaultEditView: React.FC<Props> = (props) => {
                   )}
                 </div>
                 <div className={`${baseClass}__sidebar-fields`}>
-                  {(isEditing && preview && !autosaveEnabled) && (
+                  {(isEditing && preview && (collection.versions?.drafts && !collection.versions?.drafts?.autosave)) && (
                     <PreviewButton
                       generatePreviewURL={preview}
                       data={data}

@@ -20,6 +20,8 @@ import errorMessages from './errorMessages';
 import { Context as FormContextType, Props, SubmitOptions } from './types';
 
 import { SubmittedContext, ProcessingContext, ModifiedContext, FormContext, FormWatchContext } from './context';
+import buildStateFromSchema from './buildStateFromSchema';
+import { Field } from '../../../../fields/config/types';
 
 const baseClass = 'form';
 
@@ -104,6 +106,7 @@ const Form: React.FC<Props> = (props) => {
       overrides = {},
       action: actionToUse = action,
       method: methodToUse = method,
+      skipValidation,
     } = options;
 
     if (disabled) {
@@ -122,7 +125,7 @@ const Form: React.FC<Props> = (props) => {
 
     if (waitForAutocomplete) await wait(100);
 
-    const isValid = await contextRef.current.validateForm();
+    const isValid = skipValidation ? true : await contextRef.current.validateForm();
 
     setSubmitted(true);
 
@@ -286,7 +289,7 @@ const Form: React.FC<Props> = (props) => {
   const getUnflattenedValues = useCallback(() => reduceFieldsToValues(contextRef.current.fields), [contextRef]);
 
   const createFormData = useCallback((overrides: any = {}) => {
-    const data = reduceFieldsToValues(contextRef.current.fields);
+    const data = reduceFieldsToValues(contextRef.current.fields, true);
 
     const file = data?.file;
 
@@ -309,6 +312,12 @@ const Form: React.FC<Props> = (props) => {
     return formData;
   }, [contextRef]);
 
+  const reset = useCallback(async (fieldSchema: Field[], data: unknown) => {
+    const state = await buildStateFromSchema(fieldSchema, data);
+    contextRef.current = { ...initContextState } as FormContextType;
+    dispatchFields({ type: 'REPLACE_STATE', state });
+  }, []);
+
   contextRef.current.dispatchFields = dispatchFields;
   contextRef.current.submit = submit;
   contextRef.current.getFields = getFields;
@@ -324,6 +333,7 @@ const Form: React.FC<Props> = (props) => {
   contextRef.current.setSubmitted = setSubmitted;
   contextRef.current.disabled = disabled;
   contextRef.current.formRef = formRef;
+  contextRef.current.reset = reset;
 
   useEffect(() => {
     if (initialState) {

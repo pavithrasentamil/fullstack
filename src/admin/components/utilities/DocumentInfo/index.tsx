@@ -7,6 +7,7 @@ import { PaginatedDocs } from '../../../../mongoose/types';
 import { ContextType, Props, Version } from './types';
 import { TypeWithID } from '../../../../globals/config/types';
 import { TypeWithTimestamps } from '../../../../collections/config/types';
+import { Where } from '../../../../types';
 
 const Context = createContext({} as ContextType);
 
@@ -49,29 +50,58 @@ export const DocumentInfoProvider: React.FC<Props> = ({
     let versionJSON = null;
     let shouldFetch = true;
 
-    const params = {
+    const versionParams = {
       where: {
         and: [],
       },
       depth: 0,
     };
 
+    const publishedVersionParams: { where: Where, depth: number } = {
+      where: {
+        and: [
+          {
+            or: [
+              {
+                _status: {
+                  equals: 'published',
+                },
+              },
+              {
+                _status: {
+                  exists: false,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      depth: 0,
+    };
+
     if (global) {
       shouldFetchVersions = Boolean(global?.versions);
-      versionFetchURL = `${baseURL}/globals/${global.slug}/versions?depth=0`;
-      publishedFetchURL = `${baseURL}/globals/${global.slug}?depth=0&where[_status][equals]=published`;
+      versionFetchURL = `${baseURL}/globals/${global.slug}/versions`;
+      publishedFetchURL = `${baseURL}/globals/${global.slug}?${qs.stringify(publishedVersionParams)}`;
     }
 
     if (collection) {
       shouldFetchVersions = Boolean(collection?.versions);
-      versionFetchURL = `${baseURL}/${collection.slug}/versions?where[parent][equals]=${id}&depth=0`;
-      publishedFetchURL = `${baseURL}/${collection.slug}?where[id][equals]=${id}&depth=0&where[_status][equals]=published`;
+      versionFetchURL = `${baseURL}/${collection.slug}/versions`;
+
+      publishedVersionParams.where.and.push({
+        id: {
+          equals: id,
+        },
+      });
+
+      publishedFetchURL = `${baseURL}/${collection.slug}?${qs.stringify(publishedVersionParams)}`;
 
       if (!id) {
         shouldFetch = false;
       }
 
-      params.where.and.push({
+      versionParams.where.and.push({
         parent: {
           equals: id,
         },
@@ -86,15 +116,15 @@ export const DocumentInfoProvider: React.FC<Props> = ({
       }
 
       if (shouldFetchVersions) {
-        versionJSON = await fetch(versionFetchURL).then((res) => res.json());
+        versionJSON = await fetch(`${versionFetchURL}?${qs.stringify(versionParams)}`).then((res) => res.json());
 
         if (publishedJSON?.updatedAt) {
           const newerVersionParams = {
-            ...params,
+            ...versionParams,
             where: {
-              ...params.where,
+              ...versionParams.where,
               and: [
-                ...params.where.and,
+                ...versionParams.where.and,
                 {
                   updatedAt: {
                     greater_than: publishedJSON?.updatedAt,
