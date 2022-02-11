@@ -102,25 +102,4 @@ describe('GrahpQL Version Resolvers', () => {
       expect(doc.version.title).toStrictEqual(title);
     });
   });
-
-  describe('Restore', () => {
-    it('should allow a version to be restored', async () => {
-      // update a versionsPost
-      const restore = `mutation {
-        restoreVersionAutosavePost(id: "${versionID}")
-      }`;
-
-      await client.request(restore);
-
-      const query = `query {
-        AutosavePost(id: "${postID}") {
-          title
-        }
-      }`;
-
-      const response = await client.request(query);
-      const data = response.AutosavePost;
-      expect(data.title).toStrictEqual(title);
-    });
-  });
 });
