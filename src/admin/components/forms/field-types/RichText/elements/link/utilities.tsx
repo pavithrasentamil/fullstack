@@ -12,6 +12,7 @@ export const unwrapLink = (editor: Editor): void => {
 export const wrapLink = (editor, url?: string, newTab?: boolean): void => {
   if (isLinkActive(editor)) {
     unwrapLink(editor);
+    return;
   }
 
   const { selection, blurSelection } = editor;
