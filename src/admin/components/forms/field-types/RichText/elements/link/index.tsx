@@ -94,10 +94,10 @@ const Link = ({ attributes, children, element, editorRef }) => {
                   }}
                 />
                 {error && (
-                <Error
-                  showError={error}
-                  message="Please enter a valid URL."
-                />
+                  <Error
+                    showError={error}
+                    message="Please enter a valid URL."
+                  />
                 )}
               </div>
               <Button
@@ -134,7 +134,7 @@ const Link = ({ attributes, children, element, editorRef }) => {
   );
 };
 
-const LinkButton = () => {
+const LinkButton: React.FC = () => {
   const editor = useSlate();
 
   return (
